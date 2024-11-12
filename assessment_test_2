@@ -76,6 +76,11 @@ FROM cd.members
 ORDER BY joindate DESC
 LIMIT 1;
 
+or
+
+SELECT MAX(joindate) AS latest_signup
+FROM cd.members
+
 
 -- Produce a count of the number of facilities that have a cost to guests of 10 or more.
 Expected Result is 6. --
@@ -111,7 +116,8 @@ Expected Result is 5 rows. --
 SELECT facid, SUM(slots) AS Total_Slots 
 FROM cd.bookings
 GROUP BY facid 
-HAVING SUM(slots) > 1000;
+HAVING SUM(slots) > 1000
+ORDER BY facid;
 
 
 
@@ -130,7 +136,11 @@ ORDER BY starttime;
 -- How can you produce a list of the start times for bookings by members named 'David Farrell'?
 Expected result is 34 rows of timestamps. --
 
-
+SELECT starttime, firstname, surname
+FROM cd.bookings
+INNER JOIN cd.members
+ON cd.bookings.memid = cd.members.memid
+WHERE firstname = 'David' AND surname = 'Farrell';
 
 
 
